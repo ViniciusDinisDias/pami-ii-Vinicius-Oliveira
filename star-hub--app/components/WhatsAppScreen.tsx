@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-
-const { width } = Dimensions.get('window');
+import React, { useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const WhatsAppScreen = () => {
   const [tab, setTab] = useState('conversas');
+  const insets = useSafeAreaInsets();
 
   const contatos = [
     { id: 1, nome: 'Cristiano Ronaldo', msg: '✓✓ O treino de hoje foi pesado!', time: '20:26', img: 'https://sm.mashable.com/mashable_id/photo/default/cristiano-ronaldo_bc96.jpg' },
@@ -18,7 +18,7 @@ export const WhatsAppScreen = () => {
   const renderContent = () => {
     if (tab === 'conversas') {
       return (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
           <View style={styles.searchBar}>
             <Text style={{ color: '#888' }}>Pergunte à Meta AI ou pesquise</Text>
           </View>
@@ -40,7 +40,7 @@ export const WhatsAppScreen = () => {
 
     if (tab === 'atualizacoes') {
       return (
-        <ScrollView style={{ padding: 15 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ padding: 15 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
           <Text style={styles.sectionTitle}>Status</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
             <View style={styles.statusItem}>
@@ -73,7 +73,7 @@ export const WhatsAppScreen = () => {
     }
 
     return (
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
         <View style={styles.callHeaderIcons}>
           <View style={styles.callCircle}><Ionicons name="link" size={24} color="white" /></View>
           <View style={styles.callCircle}><Ionicons name="calendar" size={24} color="white" /></View>
@@ -96,53 +96,64 @@ export const WhatsAppScreen = () => {
   };
 
   return (
-    <View style={{ width, flex: 1, backgroundColor: '#0b141a' }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <Text style={styles.title}>
-            {tab === 'conversas' ? 'WhatsApp' : tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </Text>
-          <View style={styles.headerIcons}>
-            <Ionicons name="camera-outline" size={26} color="white" />
-            <Ionicons name="search" size={26} color="white" />
-            <Ionicons name="ellipsis-vertical" size={26} color="white" />
-          </View>
+    <View style={styles.container}>
+      {/* Header com Safe Area Top */}
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+        <Text style={styles.title}>
+          {tab === 'conversas' ? 'WhatsApp' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+        </Text>
+        <View style={styles.headerIcons}>
+          <Ionicons name="camera-outline" size={26} color="white" />
+          <Ionicons name="search" size={26} color="white" />
+          <Ionicons name="ellipsis-vertical" size={26} color="white" />
         </View>
+      </View>
 
+      {/* Conteúdo principal - ocupa o espaço restante */}
+      <View style={styles.content}>
         {renderContent()}
+      </View>
 
-        <TouchableOpacity style={styles.fab}>
-          <MaterialIcons name={tab === 'ligacoes' ? "add-call" : "add-comment"} size={24} color="black" />
+      {/* FAB */}
+      <TouchableOpacity style={[styles.fab, { bottom: 100 + insets.bottom }]}>
+        <MaterialIcons name={tab === 'ligacoes' ? "add-call" : "add-comment"} size={24} color="black" />
+      </TouchableOpacity>
+
+      {/* Footer com Safe Area Bottom */}
+      <View style={[styles.footer, { paddingBottom: insets.bottom }]}>
+        <TouchableOpacity onPress={() => setTab('conversas')} style={styles.tabItem}>
+          <Ionicons name="chatbubbles" size={24} color={tab === 'conversas' ? 'white' : '#888'} />
+          <Text style={[styles.tabText, { color: tab === 'conversas' ? 'white' : '#888' }]}>Conversas</Text>
         </TouchableOpacity>
-
-        <View style={styles.footer}>
-          <TouchableOpacity onPress={() => setTab('conversas')} style={styles.tabItem}>
-            <Ionicons name="chatbubbles" size={24} color={tab === 'conversas' ? 'white' : '#888'} />
-            <Text style={[styles.tabText, { color: tab === 'conversas' ? 'white' : '#888' }]}>Conversas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTab('atualizacoes')} style={styles.tabItem}>
-            <Ionicons name="ellipse-outline" size={24} color={tab === 'atualizacoes' ? 'white' : '#888'} />
-            <Text style={[styles.tabText, { color: tab === 'atualizacoes' ? 'white' : '#888' }]}>Atualizações</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTab('ligacoes')} style={styles.tabItem}>
-            <Ionicons name="call-outline" size={24} color={tab === 'ligacoes' ? 'white' : '#888'} />
-            <Text style={[styles.tabText, { color: tab === 'ligacoes' ? 'white' : '#888' }]}>Ligações</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+        <TouchableOpacity onPress={() => setTab('atualizacoes')} style={styles.tabItem}>
+          <Ionicons name="ellipse-outline" size={24} color={tab === 'atualizacoes' ? 'white' : '#888'} />
+          <Text style={[styles.tabText, { color: tab === 'atualizacoes' ? 'white' : '#888' }]}>Atualizações</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTab('ligacoes')} style={styles.tabItem}>
+          <Ionicons name="call-outline" size={24} color={tab === 'ligacoes' ? 'white' : '#888'} />
+          <Text style={[styles.tabText, { color: tab === 'ligacoes' ? 'white' : '#888' }]}>Ligações</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0b141a',
+  },
   header: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    padding: 20, 
-    paddingTop: Platform.OS === 'ios' ? 20 : 50 
+    paddingHorizontal: 20,
+    paddingBottom: 10,
   },
   title: { color: 'white', fontSize: 24, fontWeight: 'bold' },
   headerIcons: { flexDirection: 'row', gap: 20 },
+  content: {
+    flex: 1,
+  },
   searchBar: { backgroundColor: '#202c33', margin: 15, padding: 12, borderRadius: 30 },
   chatRow: { flexDirection: 'row', padding: 15, alignItems: 'center' },
   avatar: { width: 55, height: 55, borderRadius: 27.5, marginRight: 15 },
@@ -175,12 +186,12 @@ const styles = StyleSheet.create({
   },
   fab: { 
     position: 'absolute', 
-    bottom: 100, 
     right: 20, 
     backgroundColor: '#25D366', 
     padding: 15, 
     borderRadius: 30, 
-    elevation: 5 
+    elevation: 5,
+    zIndex: 10,
   },
   footer: { 
     height: 80, 
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-around', 
     alignItems: 'center', 
-    backgroundColor: '#0b141a' 
+    backgroundColor: '#0b141a',
   },
   tabItem: { alignItems: 'center' },
   tabText: { fontSize: 11, marginTop: 4 }

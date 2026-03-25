@@ -4,9 +4,8 @@ import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native'
 import { InstagramScreen } from '../components/InstagramScreen';
 import { WhatsAppScreen } from '../components/WhatsAppScreen';
 
-
 export default function MainScreen() {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   return (
     <View style={styles.container}>
@@ -18,12 +17,12 @@ export default function MainScreen() {
         bounces={false}
       >
         {/* WhatsApp */}
-        <View style={{ width, flex: 1 }}>
+        <View style={{ width, height }}>
           <WhatsAppScreen />
         </View>
 
         {/* Instagram */}
-        <View style={{ width, flex: 1 }}>
+        <View style={{ width, height }}>
           <InstagramScreen />
         </View>
       </ScrollView>
