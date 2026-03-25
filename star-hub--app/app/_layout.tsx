@@ -6,6 +6,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+<Stack screenOptions={{ headerShown: false }}>
+  <Stack.Screen name="index" />
+</Stack>
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary
@@ -52,5 +56,8 @@ function RootLayoutNav() {
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
+    
   );
+  
+
 }

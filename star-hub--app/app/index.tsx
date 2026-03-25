@@ -1,13 +1,16 @@
+import { Stack } from 'expo-router';
 import React from 'react';
-import { View, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
-import { WhatsAppScreen } from '../components/WhatsAppScreen';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { InstagramScreen } from '../components/InstagramScreen';
+import { WhatsAppScreen } from '../components/WhatsAppScreen';
+
 
 export default function MainScreen() {
   const { width } = useWindowDimensions();
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <ScrollView
         horizontal
         pagingEnabled
