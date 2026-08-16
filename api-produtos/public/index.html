@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos — painel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">/product<span class="brand-dot">•</span>api</span>
+      <span id="status" class="status">verificando servidor…</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="panel form-panel">
+      <h2 id="form-title">Novo produto</h2>
+      <form id="product-form">
+        <input type="hidden" id="product-id">
+
+        <label for="name">Nome</label>
+        <input type="text" id="name" required placeholder="Ex: Teclado mecânico">
+
+        <div class="row">
+          <div class="col">
+            <label for="price">Preço (R$)</label>
+            <input type="number" id="price" step="0.01" min="0" required placeholder="0,00">
+          </div>
+          <div class="col">
+            <label for="stock">Estoque</label>
+            <input type="number" id="stock" min="0" placeholder="0">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submit-btn" class="btn btn-primary">Criar produto</button>
+          <button type="button" id="cancel-btn" class="btn btn-ghost hidden">Cancelar edição</button>
+        </div>
+
+        <p id="form-msg" class="form-msg"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Produtos</h2>
+        <button id="refresh-btn" class="btn btn-ghost">Atualizar</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="5" class="empty">Carregando…</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
